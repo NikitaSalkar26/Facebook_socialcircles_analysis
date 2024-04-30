@@ -1,13 +1,13 @@
-mod graph;
+mod jaccard_similarity;
+use jaccard_similarity::{Graph, compute_jaccard_similarity};
+
 fn main() {
-    match graph::Graph::from_file("facebook_combined.txt") {
-        Ok(graph) => {
-            if let Some(adj) = graph.get_adjacent(1) {
-                println!("Adjacent to 1: {:?}", adj);
-            } else {
-                println!("No adjacent vertices found for 1.");
-            }
-        },
-        Err(e) => println!("Failed to create graph: {}", e),
+    let graph = Graph::from_file("final_data.txt").unwrap();
+
+    let similarities = compute_jaccard_similarity(&graph);
+
+    // Display Jaccard similarity scores
+    for ((v1, v2), score) in similarities {
+        println!("Jaccard similarity between {} and {}: {:.3}", v1, v2, score);
     }
 }
